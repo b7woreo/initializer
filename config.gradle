@@ -1,0 +1,10 @@
+ext {
+    compileSdkVersion = 28
+    buildToolsVersion = "28.0.3"
+    minSdkVersion = 16
+    targetSdkVersion = 28
+}
+
+ext.plugin = [
+        "android": "com.android.tools.build:gradle:3.3.1"
+]
