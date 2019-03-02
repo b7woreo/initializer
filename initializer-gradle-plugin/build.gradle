@@ -5,3 +5,5 @@ dependencies {
     implementation localGroovy()
     implementation plugin['android']
 }
+
+apply from: "$rootDir/bintray.gradle"

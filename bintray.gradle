@@ -1,0 +1,52 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+def getPropertyOrNull(String prop) {
+    return hasProperty(prop) ? getProperty(prop) : null
+}
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                name project.name
+                description 'Android modularization initializer'
+                url 'https://github.com/cheie/initializer'
+
+                scm {
+                    url 'https://github.com/cheie/initializer'
+                    connection 'https://github.com/cheie/initializer.git'
+                    developerConnection 'https://github.com/cheie/initializer.git'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT'
+                        url 'https://opensource.org/licenses/mit-license'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'chrnie'
+                        name 'ChenRenJie'
+                    }
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = getPropertyOrNull('bintrayUser')
+    key = getPropertyOrNull('bintrayKey')
+    configurations = ['archives']
+
+    pkg {
+        repo = 'initializer'
+        name = project.name
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/cheie/initializer.git'
+    }
+}

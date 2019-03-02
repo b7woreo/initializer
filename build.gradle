@@ -8,6 +8,8 @@ buildscript {
 
     dependencies {
         classpath plugin['android']
+        classpath plugin['android-maven']
+        classpath plugin['bintray']
     }
 }
 
