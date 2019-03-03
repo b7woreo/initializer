@@ -10,7 +10,7 @@ install {
         pom {
             project {
                 name project.name
-                description 'Android modularization initializer'
+                description 'Android componentization initializer'
                 url 'https://github.com/cheie/initializer'
 
                 scm {
