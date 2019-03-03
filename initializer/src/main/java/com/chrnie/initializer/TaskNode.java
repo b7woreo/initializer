@@ -30,18 +30,21 @@ final class TaskNode extends GraphNode<TaskNode> {
     executeInternal(context);
   }
 
-  private synchronized void executeInternal(Context context) {
+  private synchronized void executeInternal(final Context context) {
     ensureDependenciesInit();
 
     if (!dependencies.isEmpty()) {
       return;
     }
 
-    final Runnable r = () -> {
-      action.call(context);
+    final Runnable r = new Runnable() {
+      @Override
+      public void run() {
+        action.call(context);
 
-      for (TaskNode child : getChildren()) {
-        child.onParentExecuted(context, this);
+        for (TaskNode child : TaskNode.this.getChildren()) {
+          child.onParentExecuted(context, TaskNode.this);
+        }
       }
     };
 

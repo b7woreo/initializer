@@ -29,7 +29,7 @@ public abstract class Task implements Action {
   }
 
   List<String> getDependencies() {
-    return dependencies == null ? Collections.emptyList() : dependencies;
+    return dependencies == null ? Collections.<String>emptyList() : dependencies;
   }
 
   void buildConfig() {

@@ -4,7 +4,12 @@ import android.content.Context;
 
 interface Action {
 
-  Action EMPTY = context -> {};
+  Action EMPTY = new Action() {
+    @Override
+    public void call(Context context) {
+      // empty
+    }
+  };
 
   void call(Context context);
 }
