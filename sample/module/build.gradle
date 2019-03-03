@@ -1,0 +1,15 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 28
+    }
+}
+
+dependencies {
+    implementation project(':basic')
+    implementation 'com.chrnie:initializer:1.0.0-SNAPSHOT'
+}

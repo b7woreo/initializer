@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.chrnie.initializer'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.chrnie.initializer.sample"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        config {
+            keyAlias 'sample'
+            keyPassword 'sample'
+            storeFile file('./release.key')
+            storePassword 'sample'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':basic')
+    implementation project(':module')
+    implementation 'com.chrnie:initializer:1.0.0-SNAPSHOT'
+}
