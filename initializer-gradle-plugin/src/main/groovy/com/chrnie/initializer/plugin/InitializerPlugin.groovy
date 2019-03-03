@@ -1,5 +1,7 @@
 package com.chrnie.initializer.plugin
 
+import com.android.build.gradle.AppExtension
+import com.android.build.gradle.AppPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

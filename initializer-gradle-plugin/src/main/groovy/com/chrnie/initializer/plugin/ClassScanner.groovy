@@ -2,6 +2,7 @@ package com.chrnie.initializer.plugin
 
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.Opcodes
 
 import java.util.jar.JarFile
 
