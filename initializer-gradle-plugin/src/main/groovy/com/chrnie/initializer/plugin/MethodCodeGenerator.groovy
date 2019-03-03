@@ -24,14 +24,15 @@ class MethodCodeGenerator {
         }
 
         JarOutputStream jarOutputStream = new JarOutputStream(new FileOutputStream(optJar))
+
         def file = new JarFile(jarFile)
-        new JarFile(jarFile).entries().each { jarEntry ->
+        file.entries().each { jarEntry ->
             def entryName = jarEntry.name
             def zipEntry = new ZipEntry(entryName)
             def inputStream = file.getInputStream(zipEntry)
-
             jarOutputStream.putNextEntry(zipEntry)
-            if (Const.SCAN_CLASS_SUPER_NAME == entryName) {
+
+            if (Const.HOOK_CLASS_FILE_NAME == entryName) {
                 def bytes = hackMethod(inputStream)
                 jarOutputStream.write(bytes)
             } else {
@@ -92,6 +93,7 @@ class MethodCodeGenerator {
             taskNameList.each { taskName ->
                 mv.visitVarInsn(Opcodes.ALOAD, 0)
                 mv.visitTypeInsn(Opcodes.NEW, taskName)
+                mv.visitInsn(Opcodes.DUP)
                 mv.visitMethodInsn(
                         Opcodes.INVOKESPECIAL,
                         taskName,

@@ -64,7 +64,7 @@ class InitializerTransform extends Transform {
             input.directoryInputs.each { directoryInput ->
                 def directoryFile = directoryInput.file
                 def destFile = outputProvider.getContentLocation(
-                        directoryInput.file,
+                        directoryInput.name,
                         directoryInput.contentTypes,
                         directoryInput.scopes,
                         Format.DIRECTORY
