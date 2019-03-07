@@ -27,12 +27,13 @@ final class TaskNode extends GraphNode<TaskNode> {
 
   void execute(Context context) {
     ensureNoCyclicDependency();
-    executeInternal(context);
+    executeInternal(context, this);
   }
 
-  private synchronized void executeInternal(final Context context) {
+  private synchronized void executeInternal(final Context context, TaskNode caller) {
     ensureDependenciesInit();
 
+    dependencies.remove(caller);
     if (!dependencies.isEmpty()) {
       return;
     }
@@ -43,18 +44,12 @@ final class TaskNode extends GraphNode<TaskNode> {
         action.call(context);
 
         for (TaskNode child : TaskNode.this.getChildren()) {
-          child.onParentExecuted(context, TaskNode.this);
+          child.executeInternal(context, TaskNode.this);
         }
       }
     };
 
     executor.execute(r);
-  }
-
-  private synchronized void onParentExecuted(Context context, TaskNode parent) {
-    ensureDependenciesInit();
-    dependencies.remove(parent);
-    executeInternal(context);
   }
 
   private synchronized void ensureDependenciesInit() {
