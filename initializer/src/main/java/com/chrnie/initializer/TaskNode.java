@@ -26,13 +26,14 @@ final class TaskNode extends GraphNode<TaskNode> {
   }
 
   void execute(Context context) {
-    ensureNoCyclicDependency();
+    ensureNoneCyclicDependency();
     executeInternal(context, this);
   }
 
   private synchronized void executeInternal(final Context context, TaskNode caller) {
-    ensureDependenciesInit();
-
+    if (dependencies == null) {
+      this.dependencies = new HashSet<>(getParent());
+    }
     dependencies.remove(caller);
     if (!dependencies.isEmpty()) {
       return;
@@ -52,13 +53,7 @@ final class TaskNode extends GraphNode<TaskNode> {
     executor.execute(r);
   }
 
-  private synchronized void ensureDependenciesInit() {
-    if (dependencies == null) {
-      this.dependencies = new HashSet<>(getParent());
-    }
-  }
-
-  private void ensureNoCyclicDependency() {
+  private void ensureNoneCyclicDependency() {
     List<TaskNode> cyclicNode = findCycle();
     if (cyclicNode == null) {
       return;
