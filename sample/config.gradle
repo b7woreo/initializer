@@ -1,0 +1,13 @@
+ext {
+    compileSdkVersion = 28
+    minSdkVersion = 16
+    targetSdkVersion = 28
+}
+
+def initializer_version = '1.0.0'
+
+ext.deps = [
+        "android"           : "com.android.tools.build:gradle:3.3.1",
+        "initializer-plugin": "com.chrnie:initializer-gradle-plugin:$initializer_version",
+        "initializer"       : "com.chrnie:initializer:$initializer_version",
+]
