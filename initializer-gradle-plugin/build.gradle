@@ -1,9 +1,22 @@
-apply plugin: 'groovy'
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'kotlin'
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = 'com.chrnie.initializer'
+            implementationClass = 'com.chrnie.initializer.plugin.InitializerPlugin'
+        }
+    }
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
-    implementation gradleApi()
-    implementation localGroovy()
-    implementation plugin['android']
+    implementation deps['android']
+    implementation deps['kotlin-stdlib']
+    implementation deps['asm']
 }
 
 apply from: "$rootDir/bintray.gradle"
