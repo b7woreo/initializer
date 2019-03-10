@@ -5,12 +5,12 @@ import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.transform.Transform
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.android.utils.FileUtils
+import org.gradle.api.logging.Logger
 import java.io.File
 import java.io.FileInputStream
 import java.util.jar.JarFile
 
-class InitializerTransform : Transform() {
+class InitializerTransform(val logger: Logger) : Transform() {
 
     override fun getName(): String = InitializerTransform::class.simpleName!!
 
@@ -22,7 +22,7 @@ class InitializerTransform : Transform() {
 
     override fun isIncremental(): Boolean = false
 
-    override fun transform(invocation: TransformInvocation) {
+    override fun transform(invocation: TransformInvocation) = timer {
         val inputs = invocation.inputs
         val outputProvider = invocation.outputProvider
 
@@ -86,5 +86,13 @@ class InitializerTransform : Transform() {
 
         val generator = CodeGenerator(hookJar!!, taskList)
         generator.generate()
+
+        logger.quiet("[Initializer]: task:$taskList")
+    }
+
+    private inline fun timer(block: () -> Unit) {
+        val startTime = System.currentTimeMillis()
+        block()
+        logger.quiet("[Initializer]: consume time:${System.currentTimeMillis() - startTime}")
     }
 }
