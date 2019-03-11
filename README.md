@@ -1,6 +1,8 @@
-# Initializer  
+# Initializer [![Build Status](https://travis-ci.org/cheie/initializer.svg?branch=master)](https://travis-ci.org/cheie/initializer) [![Download](https://api.bintray.com/packages/chrnie/initializer/initializer/images/download.svg)](https://bintray.com/chrnie/initializer/initializer/_latestVersion)
+
 A framework for initialize task of Android componentization.  
-Support feature:  
+
+## Feature  
 1. Auto discover tasks
 2. Manage dependencies between tasks
 3. Customize task running thread through executor
