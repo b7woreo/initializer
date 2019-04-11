@@ -8,22 +8,22 @@ import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
 
-class CodeGenerator(private val jarFile: File, private val taskList: List<String>) {
+class CodeGenerator(private val outputFile: File, private val taskNameList: List<String>) {
 
     fun generate() {
-        val optJar = File(jarFile.parent, "${jarFile.name}.opt")
+        val optJar = File(outputFile.parent, "${outputFile.name}.opt")
         if (optJar.exists()) {
             optJar.delete()
         }
 
         val jarOutputStream = JarOutputStream(FileOutputStream(optJar))
 
-        val zipFile = JarFile(jarFile)
-        zipFile.entries().iterator()
+        val jarFile = JarFile(outputFile)
+        jarFile.entries().iterator()
             .forEach { jarEntry ->
                 val entryName = jarEntry.name
                 val zipEntry = ZipEntry(entryName)
-                val inputStream = zipFile.getInputStream(zipEntry)
+                val inputStream = jarFile.getInputStream(zipEntry)
 
                 jarOutputStream.putNextEntry(zipEntry)
 
@@ -39,12 +39,12 @@ class CodeGenerator(private val jarFile: File, private val taskList: List<String
             }
 
         jarOutputStream.close()
-        zipFile.close()
+        jarFile.close()
 
-        if (jarFile.exists()) {
-            jarFile.delete()
+        if (outputFile.exists()) {
+            outputFile.delete()
         }
-        optJar.renameTo(jarFile)
+        optJar.renameTo(outputFile)
     }
 
     private fun hackMethod(inputStream: InputStream): ByteArray {
@@ -81,7 +81,7 @@ class CodeGenerator(private val jarFile: File, private val taskList: List<String
         }
 
         private fun insertCode() {
-            taskList.forEach { taskName ->
+            taskNameList.forEach { taskName ->
                 mv.visitVarInsn(Opcodes.ALOAD, 0)
                 mv.visitTypeInsn(Opcodes.NEW, taskName)
                 mv.visitInsn(Opcodes.DUP)
