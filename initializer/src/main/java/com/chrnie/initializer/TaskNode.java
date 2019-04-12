@@ -26,7 +26,9 @@ final class TaskNode extends GraphNode<TaskNode> {
   }
 
   void execute(Context context) {
-    ensureNoneCyclicDependency();
+    if (Initializer.isDebug()) {
+      ensureNoneCyclicDependency();
+    }
     executeInternal(context, this);
   }
 
