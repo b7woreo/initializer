@@ -20,7 +20,7 @@ public abstract class Task implements Action {
     this.name = name;
   }
 
-  final String getName() {
+  public final String getName() {
     return name;
   }
 
