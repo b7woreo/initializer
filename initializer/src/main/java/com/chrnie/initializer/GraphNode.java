@@ -1,10 +1,8 @@
 package com.chrnie.initializer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 abstract class GraphNode<T extends GraphNode<T>> {
@@ -30,53 +28,45 @@ abstract class GraphNode<T extends GraphNode<T>> {
   }
 
   final List<T> findCycle() {
-    Map<GraphNode<T>, State> nodeState = new HashMap<>();
+    Set<GraphNode<T>> visited = new HashSet<>();
+    Set<GraphNode<T>> inStack = new HashSet<>();
     List<T> cyclicNode = new ArrayList<>();
-    deepFirstTraverse(nodeState, cyclicNode);
+    deepFirstTraverse(visited, inStack, cyclicNode);
     return cyclicNode.isEmpty() ? null : cyclicNode;
   }
 
-  private boolean deepFirstTraverse(Map<GraphNode<T>, State> nodeState, List<T> cyclicNode) {
-    nodeState.put(this, State.IN_STACK);
+  private GraphNode<T> deepFirstTraverse(
+      Set<GraphNode<T>> visited,
+      Set<GraphNode<T>> inStack,
+      List<T> cyclicNode) {
+    visited.add(this);
+    inStack.add(this);
 
     for (GraphNode<T> child : children) {
-      State state = nodeState.get(child);
-
-      if (state == null /* unvisited */) {
-        boolean inCycle = child.deepFirstTraverse(nodeState, cyclicNode);
-
-        if (cyclicNode.isEmpty()) {
-          continue;
-        }
-
-        if (!inCycle) {
-          return false;
-        }
-
+      if (inStack.contains(child)) {
         cyclicNode.add((T) this);
-        return nodeState.get(this) != State.CYCLE_ORIGIN;
+        return child;
       }
 
-      if (state == State.VISITED) {
+      if (visited.contains(child)) {
         continue;
       }
 
-      if (state == State.IN_STACK) {
-        nodeState.put(child, State.CYCLE_ORIGIN);
-        cyclicNode.add((T) this);
-        return true;
+      GraphNode<T> cycleOrigin = child.deepFirstTraverse(visited, inStack, cyclicNode);
+
+      if (cyclicNode.isEmpty()) {
+        continue;
       }
 
-      throw new IllegalStateException("illegal node state: " + state);
+      if (cycleOrigin == null) {
+        return null;
+      }
+
+      cyclicNode.add((T) this);
+      return cycleOrigin.equals(this) ? null : cycleOrigin;
     }
 
-    nodeState.put(this, State.VISITED);
-    return false;
-  }
-
-  private enum State {
-    VISITED,
-    IN_STACK,
-    CYCLE_ORIGIN
+    inStack.remove(this);
+    return null;
   }
 }
