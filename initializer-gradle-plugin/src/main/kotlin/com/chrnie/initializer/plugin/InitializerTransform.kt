@@ -23,7 +23,7 @@ class InitializerTransform(private val logger: Logger) : Transform() {
 
     override fun isIncremental(): Boolean = false
 
-    override fun transform(invocation: TransformInvocation) = timer {
+    override fun transform(invocation: TransformInvocation) {
         val inputs = invocation.inputs
         val outputProvider = invocation.outputProvider
 
@@ -117,11 +117,5 @@ class InitializerTransform(private val logger: Logger) : Transform() {
             .map { it.apply { ensureTaskClassValid(this) } }
             .map { it.name }
             .toList()
-    }
-
-    private inline fun timer(block: () -> Unit) {
-        val startTime = System.currentTimeMillis()
-        block()
-        logger.quiet("[Initializer] consume time:${System.currentTimeMillis() - startTime}")
     }
 }
