@@ -14,7 +14,7 @@ class InitializerPlugin : Plugin<Project> {
         }
 
         val logger = project.logger
-        logger.quiet("[Initializer]: register in module: ${project.name}")
+        logger.quiet("Initializer register in project: ${project.name}")
 
         val android = project.extensions.getByType(AppExtension::class.java)
         android.registerTransform(InitializerTransform(logger))

@@ -55,7 +55,7 @@ class InitializerTransform(private val logger: Logger) : Transform() {
             .toList()
 
         val taskNameList = findAllTaskName(classList)
-        logger.quiet("[Initializer] task: $taskNameList")
+        logger.quiet("Found task class: $taskNameList")
 
         classList.firstOrNull { HOOK_CLASS_NAME == it.name }
             ?.let { CodeGenerator(it.outputFile, taskNameList) }
