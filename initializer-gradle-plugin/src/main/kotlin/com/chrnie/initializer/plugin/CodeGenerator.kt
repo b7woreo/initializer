@@ -4,6 +4,8 @@ import org.objectweb.asm.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
@@ -12,9 +14,7 @@ class CodeGenerator(private val outputFile: File, private val taskNameList: List
 
     fun generate() {
         val optJar = File(outputFile.parent, "${outputFile.name}.opt")
-        if (optJar.exists()) {
-            optJar.delete()
-        }
+        Files.deleteIfExists(optJar.toPath())
 
         val jarOutputStream = JarOutputStream(FileOutputStream(optJar))
 
@@ -41,10 +41,7 @@ class CodeGenerator(private val outputFile: File, private val taskNameList: List
         jarOutputStream.close()
         jarFile.close()
 
-        if (outputFile.exists()) {
-            outputFile.delete()
-        }
-        optJar.renameTo(outputFile)
+        Files.move(optJar.toPath(), outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
     }
 
     private fun hackMethod(inputStream: InputStream): ByteArray {
