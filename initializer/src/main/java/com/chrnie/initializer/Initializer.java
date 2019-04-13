@@ -61,13 +61,9 @@ public final class Initializer {
     for (Task task : taskList) {
       String taskName = task.getName();
       TaskNode taskNode = nameToNode.get(taskName);
+      rootNode.addChild(taskNode);
 
       List<String> dependencies = task.getDependencies();
-      if (dependencies.isEmpty()) {
-        rootNode.addChild(taskNode);
-        continue;
-      }
-
       for (String parentName : dependencies) {
         TaskNode parentNode = nameToNode.get(parentName);
         if (parentNode == null) {
