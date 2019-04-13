@@ -17,14 +17,14 @@ class CodeGenerator(private val outputFile: File, private val taskNameList: List
         Files.deleteIfExists(optJar.toPath())
 
         val jarOutputStream = JarOutputStream(FileOutputStream(optJar))
-
         val jarFile = JarFile(outputFile)
+
         jarFile.entries().iterator()
             .forEach { jarEntry ->
                 val entryName = jarEntry.name
                 val zipEntry = ZipEntry(entryName)
-                val inputStream = jarFile.getInputStream(zipEntry)
 
+                val inputStream = jarFile.getInputStream(zipEntry)
                 jarOutputStream.putNextEntry(zipEntry)
 
                 if (HOOK_CLASS_FILE_NAME == entryName) {

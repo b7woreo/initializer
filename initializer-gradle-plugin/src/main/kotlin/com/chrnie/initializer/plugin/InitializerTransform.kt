@@ -64,21 +64,23 @@ class InitializerTransform(private val logger: Logger) : Transform() {
     }
 
     private fun findClassInJarFile(file: File): Sequence<ClassMetadata> {
-        return JarFile(file).let { jarFile ->
+        return JarFile(file).use { jarFile ->
             jarFile.entries()
-                .asSequence()
+                .toList()
                 .filter { !it.isDirectory and it.name.endsWith(".class") }
-                .map { jarFile.getInputStream(it) }
-                .map { ClassMetadata(it, file) }
-        }
+                .map { classEntry ->
+                    jarFile.getInputStream(classEntry).use { ClassMetadata(it, file) }
+                }
+        }.asSequence()
     }
 
     private fun findClassInDirectory(file: File): Sequence<ClassMetadata> {
         return file.walkTopDown()
             .asSequence()
             .filter { it.isFile and it.name.endsWith(".class") }
-            .map { FileInputStream(it) }
-            .map { ClassMetadata(it, file) }
+            .map { classFile ->
+                FileInputStream(classFile).use { ClassMetadata(it, file) }
+            }
     }
 
     private fun findAllTaskName(list: List<ClassMetadata>): List<String> {
