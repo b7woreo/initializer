@@ -4,27 +4,27 @@ import org.objectweb.asm.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
 
-class CodeGenerator(private val jarFile: File, private val taskList: List<String>) {
+class CodeGenerator(private val outputFile: File, private val taskNameList: List<String>) {
 
     fun generate() {
-        val optJar = File(jarFile.parent, "${jarFile.name}.opt")
-        if (optJar.exists()) {
-            optJar.delete()
-        }
+        val optJar = File(outputFile.parent, "${outputFile.name}.opt")
+        Files.deleteIfExists(optJar.toPath())
 
         val jarOutputStream = JarOutputStream(FileOutputStream(optJar))
+        val jarFile = JarFile(outputFile)
 
-        val zipFile = JarFile(jarFile)
-        zipFile.entries().iterator()
+        jarFile.entries().iterator()
             .forEach { jarEntry ->
                 val entryName = jarEntry.name
                 val zipEntry = ZipEntry(entryName)
-                val inputStream = zipFile.getInputStream(zipEntry)
 
+                val inputStream = jarFile.getInputStream(zipEntry)
                 jarOutputStream.putNextEntry(zipEntry)
 
                 if (HOOK_CLASS_FILE_NAME == entryName) {
@@ -39,12 +39,9 @@ class CodeGenerator(private val jarFile: File, private val taskList: List<String
             }
 
         jarOutputStream.close()
-        zipFile.close()
+        jarFile.close()
 
-        if (jarFile.exists()) {
-            jarFile.delete()
-        }
-        optJar.renameTo(jarFile)
+        Files.move(optJar.toPath(), outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
     }
 
     private fun hackMethod(inputStream: InputStream): ByteArray {
@@ -81,7 +78,7 @@ class CodeGenerator(private val jarFile: File, private val taskList: List<String
         }
 
         private fun insertCode() {
-            taskList.forEach { taskName ->
+            taskNameList.forEach { taskName ->
                 mv.visitVarInsn(Opcodes.ALOAD, 0)
                 mv.visitTypeInsn(Opcodes.NEW, taskName)
                 mv.visitInsn(Opcodes.DUP)

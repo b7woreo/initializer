@@ -11,17 +11,30 @@ public final class Initializer {
 
   private static Initializer instance;
 
-  public synchronized static void init(Context context) {
+  public static void init(Context context) {
+    init(context, true);
+  }
+
+  public synchronized static void init(Context context, boolean debug) {
     if (instance != null) {
       return;
     }
 
-    instance = new Initializer();
+    instance = new Initializer(debug);
     instance.initialize(context.getApplicationContext());
   }
 
-  private Initializer() {
+  public synchronized static boolean isDebug() {
+    if (instance == null) {
+      throw new IllegalStateException("call Initializer.init() first");
+    }
+    return instance.debug;
+  }
 
+  private final boolean debug;
+
+  private Initializer(boolean debug) {
+    this.debug = debug;
   }
 
   private void initialize(Context context) {
@@ -48,13 +61,9 @@ public final class Initializer {
     for (Task task : taskList) {
       String taskName = task.getName();
       TaskNode taskNode = nameToNode.get(taskName);
+      rootNode.addChild(taskNode);
 
       List<String> dependencies = task.getDependencies();
-      if (dependencies.isEmpty()) {
-        rootNode.addChild(taskNode);
-        continue;
-      }
-
       for (String parentName : dependencies) {
         TaskNode parentNode = nameToNode.get(parentName);
         if (parentNode == null) {

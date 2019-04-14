@@ -1,18 +1,13 @@
 package com.chrnie.initializer;
 
 import android.content.Context;
-import android.util.Log;
 import com.chrnie.initializer.exception.CyclicDependencyException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
 final class TaskNode extends GraphNode<TaskNode> {
-
-  private static final String ROOT_NAME = "Root";
-  private static final String TAG = "Initializer";
 
   private final String name;
   private final Executor executor;
@@ -25,13 +20,15 @@ final class TaskNode extends GraphNode<TaskNode> {
   }
 
   TaskNode(String name, Executor executor, Action action) {
-    this.name = name != null ? name : ROOT_NAME;
+    this.name = name;
     this.executor = executor != null ? executor : MainExecutor.get();
     this.action = action != null ? action : Action.EMPTY;
   }
 
   void execute(Context context) {
-    ensureNoneCyclicDependency();
+    if (Initializer.isDebug()) {
+      ensureNoneCyclicDependency();
+    }
     executeInternal(context, this);
   }
 
@@ -39,6 +36,7 @@ final class TaskNode extends GraphNode<TaskNode> {
     if (dependencies == null) {
       this.dependencies = new HashSet<>(getParent());
     }
+
     dependencies.remove(caller);
     if (!dependencies.isEmpty()) {
       return;
@@ -47,15 +45,7 @@ final class TaskNode extends GraphNode<TaskNode> {
     final Runnable r = new Runnable() {
       @Override
       public void run() {
-        long startTime = System.currentTimeMillis();
-
-        Log.d(TAG, String.format(Locale.ENGLISH,
-            "Start task: [%s : %s]", name, Thread.currentThread().getName()
-        ));
         action.call(context);
-        Log.d(TAG, String.format(Locale.ENGLISH,
-            "End task: [%s : %d]", name, (System.currentTimeMillis() - startTime))
-        );
 
         for (TaskNode child : TaskNode.this.getChildren()) {
           child.executeInternal(context, TaskNode.this);
