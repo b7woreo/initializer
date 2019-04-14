@@ -112,7 +112,8 @@ class InitializerTransform(private val logger: Logger) : Transform() {
                 ?: throw IllegalTaskException("task class has not public empty constructor: ${classMetadata.name}")
         }
 
-        return list.filter { it.superName != null }
+        return list.asSequence()
+            .filter { it.superName != null }
             .groupBy { it.superName!! }
             .let { traversTaskMetadata(TASK_CLASS_SUPER_NAME, it) }
             .filter { !it.isAbstract }
