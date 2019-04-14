@@ -45,7 +45,7 @@ final class TaskNode extends GraphNode<TaskNode> {
     final Runnable r = new Runnable() {
       @Override
       public void run() {
-        action.call(context);
+        action.run(context);
 
         for (TaskNode child : TaskNode.this.getChildren()) {
           child.executeInternal(context, TaskNode.this);

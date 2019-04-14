@@ -6,10 +6,10 @@ interface Action {
 
   Action EMPTY = new Action() {
     @Override
-    public void call(Context context) {
+    public void run(Context context) {
       // empty
     }
   };
 
-  void call(Context context);
+  void run(Context context);
 }
