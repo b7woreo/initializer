@@ -16,6 +16,10 @@ public final class Initializer {
   }
 
   public synchronized static void init(Context context, boolean debug) {
+    if(context == null){
+      throw new NullPointerException("context == null");
+    }
+
     if (instance != null) {
       return;
     }
