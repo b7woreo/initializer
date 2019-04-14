@@ -29,6 +29,9 @@ implementation "com.chrnie:initializer:$x.y.z"
 ## Usage
 [Sample Project](./sample)
 
+## Inspiration
+[知乎 Android 客户端组件化实践](https://zhuanlan.zhihu.com/p/45374964)
+
 ## License
 ```
 MIT License
