@@ -12,7 +12,7 @@ public class AModuleTask extends BaseTask {
   }
 
   @Override
-  protected void onCall(Context context) {
+  protected void onRun(Context context) {
     try {
       Thread.sleep(1000);
     } catch (InterruptedException ignore) {

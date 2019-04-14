@@ -17,7 +17,7 @@ public class CModuleTask extends BaseTask {
   }
 
   @Override
-  public void onCall(Context context) {
+  public void onRun(Context context) {
     try {
       Thread.sleep(1000);
     } catch (InterruptedException ignore) {

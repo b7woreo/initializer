@@ -11,7 +11,7 @@ public class AAppTask extends BaseTask {
   }
 
   @Override
-  protected void onCall(Context context) {
+  protected void onRun(Context context) {
     try {
       Thread.sleep(200);
     } catch (InterruptedException ignore) {

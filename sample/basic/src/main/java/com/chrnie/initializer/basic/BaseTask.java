@@ -14,13 +14,13 @@ public abstract class BaseTask extends Task {
   }
 
   @Override
-  public final void call(Context context) {
+  public final void run(Context context) {
     Log.i(TAG, String.format(
         Locale.ENGLISH, "start %s task in %s thread", getName(), Thread.currentThread().getName())
     );
-    onCall(context);
+    onRun(context);
     Log.i(TAG, String.format(Locale.ENGLISH, "end %s task", getName()));
   }
 
-  protected abstract void onCall(Context context);
+  protected abstract void onRun(Context context);
 }

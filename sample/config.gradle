@@ -4,7 +4,7 @@ ext {
     targetSdkVersion = 28
 }
 
-def initializer_version = '1.1.1'
+def initializer_version = '1.2.0'
 
 ext.deps = [
         "android"           : "com.android.tools.build:gradle:3.3.1",
