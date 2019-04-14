@@ -9,3 +9,6 @@ android {
     }
 }
 
+dependencies {
+    api deps['initializer']
+}

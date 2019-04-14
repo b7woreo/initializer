@@ -1,14 +1,11 @@
 package com.chrnie.initializer.sample;
 
 import android.content.Context;
-import android.util.Log;
-import com.chrnie.initializer.Task;
 import com.chrnie.initializer.basic.AppExecutors;
+import com.chrnie.initializer.basic.BaseTask;
 import com.chrnie.initializer.basic.Tasks;
 
-public class BAppTask extends Task {
-
-  private static final String TAG = "Task";
+public class BAppTask extends BaseTask {
 
   public BAppTask() {
     super(Tasks.B_APP);
@@ -20,12 +17,10 @@ public class BAppTask extends Task {
   }
 
   @Override
-  public void call(Context context) {
-    Log.i(TAG, "start B app task -" + Thread.currentThread());
+  public void onCall(Context context) {
     try {
       Thread.sleep(300);
     } catch (InterruptedException ignore) {
     }
-    Log.i(TAG, "end B App task");
   }
 }

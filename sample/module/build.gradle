@@ -11,5 +11,4 @@ android {
 
 dependencies {
     implementation project(':basic')
-    implementation deps['initializer']
 }
