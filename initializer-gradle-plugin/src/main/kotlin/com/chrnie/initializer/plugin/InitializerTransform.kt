@@ -5,7 +5,6 @@ import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.transform.Transform
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.chrnie.initializer.plugin.exception.IllegalTaskException
 import org.gradle.api.Project
 import java.io.File
 import java.io.FileInputStream
@@ -64,7 +63,7 @@ class InitializerTransform(private val project: Project) : Transform() {
         classList.firstOrNull { HOOK_CLASS_NAME == it.name }
             ?.let { CodeGenerator(it.outputFile, taskNameList) }
             ?.generate()
-            ?: throw IllegalStateException("can not found $HOOK_CLASS_FILE_NAME")
+            ?: throw RuntimeException("can not found $HOOK_CLASS_FILE_NAME")
     }
 
     private fun findClassInJarFile(file: File): Sequence<ClassMetadata> {
@@ -100,11 +99,11 @@ class InitializerTransform(private val project: Project) : Transform() {
 
         fun ensureTaskClassValid(classMetadata: ClassMetadata) {
             if (!classMetadata.isPublic) {
-                throw IllegalTaskException("task class is not public access: ${classMetadata.name}")
+                throw RuntimeException("task class is not public access: ${classMetadata.name}")
             }
 
             if (classMetadata.isAbstract) {
-                throw IllegalTaskException("task class is abstract: ${classMetadata.name}")
+                throw RuntimeException("task class is abstract: ${classMetadata.name}")
             }
 
             classMetadata.methods.firstOrNull { methodMetadata ->
@@ -113,7 +112,7 @@ class InitializerTransform(private val project: Project) : Transform() {
                 val public = methodMetadata.isPublic
                 constructor and noneParam and public
             }
-                ?: throw IllegalTaskException("task class has not public empty constructor: ${classMetadata.name}")
+                ?: throw RuntimeException("task class has not public empty constructor: ${classMetadata.name}")
         }
 
         return list.asSequence()
