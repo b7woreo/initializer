@@ -6,12 +6,14 @@ import com.android.build.api.transform.Transform
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.chrnie.initializer.plugin.exception.IllegalTaskException
-import org.gradle.api.logging.Logger
+import org.gradle.api.Project
 import java.io.File
 import java.io.FileInputStream
 import java.util.jar.JarFile
 
-class InitializerTransform(private val logger: Logger) : Transform() {
+class InitializerTransform(private val project: Project) : Transform() {
+
+    private val logger = project.logger
 
     override fun getName(): String = InitializerTransform::class.simpleName!!
 
@@ -24,6 +26,8 @@ class InitializerTransform(private val logger: Logger) : Transform() {
     override fun isIncremental(): Boolean = false
 
     override fun transform(invocation: TransformInvocation) {
+        logger.quiet("Initializer register in project: ${project.name}")
+
         val inputs = invocation.inputs
         val outputProvider = invocation.outputProvider
 
