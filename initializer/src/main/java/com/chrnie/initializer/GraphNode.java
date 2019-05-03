@@ -10,6 +10,7 @@ abstract class GraphNode<T extends GraphNode<T>> {
   private final Set<T> parent = new HashSet<>();
   private final Set<T> children = new HashSet<>();
 
+  @SuppressWarnings("unchecked")
   final void addChild(GraphNode<T> child) {
     if (child == null) {
       throw new NullPointerException("child == null");
@@ -35,6 +36,7 @@ abstract class GraphNode<T extends GraphNode<T>> {
     return cyclicNode.isEmpty() ? null : cyclicNode;
   }
 
+  @SuppressWarnings("unchecked")
   private GraphNode<T> deepFirstTraverse(
       Set<GraphNode<T>> visited,
       Set<GraphNode<T>> inStack,
