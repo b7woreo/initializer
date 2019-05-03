@@ -1,6 +1,7 @@
 package com.chrnie.initializer;
 
 import android.content.Context;
+import android.text.TextUtils;
 import com.chrnie.initializer.exception.CyclicDependencyException;
 import java.util.HashSet;
 import java.util.List;
@@ -64,18 +65,9 @@ final class TaskNode extends GraphNode<TaskNode> {
       return;
     }
 
-    StringBuilder builder = new StringBuilder();
-    builder.append("cyclic dependency: [");
-    int size = cyclicNode.size();
-    for (int i = 0; i < size; i++) {
-      TaskNode node = cyclicNode.get(i);
-      builder.append(node.name);
-      if (i != (size - 1)) {
-        builder.append(" -> ");
-      }
-    }
-    builder.append(']');
-    throw new CyclicDependencyException(builder.toString());
+    throw new CyclicDependencyException(
+        "cyclic dependency: [" + TextUtils.join(" -> ", cyclicNode) + ']'
+    );
   }
 
   @Override
@@ -95,5 +87,10 @@ final class TaskNode extends GraphNode<TaskNode> {
   @Override
   public int hashCode() {
     return name != null ? name.hashCode() : 0;
+  }
+
+  @Override
+  public String toString() {
+    return name != null ? name : "";
   }
 }
