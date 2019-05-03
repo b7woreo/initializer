@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 public abstract class Task implements Action {
 
@@ -12,6 +13,7 @@ public abstract class Task implements Action {
   private boolean buildingConfig = false;
   private Executor executor = MainExecutor.get();
   private List<String> dependencies = null;
+  private Delay delay = Delay.NONE;
 
   public Task(String name) {
     if (name == null) {
@@ -30,6 +32,10 @@ public abstract class Task implements Action {
 
   List<String> getDependencies() {
     return dependencies == null ? Collections.<String>emptyList() : dependencies;
+  }
+
+  Delay getDelay() {
+    return delay;
   }
 
   void buildConfig() {
@@ -68,5 +74,13 @@ public abstract class Task implements Action {
     }
 
     this.executor = executor;
+  }
+
+  protected final void setDelay(long delay, TimeUnit unit) {
+    if (!buildingConfig) {
+      throw new IllegalStateException("only call setDelay in config() method");
+    }
+
+    this.delay = new Delay(delay, unit);
   }
 }

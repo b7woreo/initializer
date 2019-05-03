@@ -1,6 +1,7 @@
 package com.chrnie.initializer;
 
 import android.content.Context;
+import android.text.TextUtils;
 import com.chrnie.initializer.exception.CyclicDependencyException;
 import java.util.HashSet;
 import java.util.List;
@@ -10,17 +11,19 @@ import java.util.concurrent.Executor;
 final class TaskNode extends GraphNode<TaskNode> {
 
   private final String name;
+  private final Delay delay;
   private final Executor executor;
   private final Action action;
 
   private Set<TaskNode> dependencies = null;
 
   TaskNode() {
-    this(null, null, null);
+    this(null, null, null, null);
   }
 
-  TaskNode(String name, Executor executor, Action action) {
+  TaskNode(String name, Delay delay, Executor executor, Action action) {
     this.name = name;
+    this.delay = delay != null ? delay : Delay.NONE;
     this.executor = executor != null ? executor : MainExecutor.get();
     this.action = action != null ? action : Action.EMPTY;
   }
@@ -53,7 +56,7 @@ final class TaskNode extends GraphNode<TaskNode> {
       }
     };
 
-    executor.execute(r);
+    delay.runDelayed(executor, r);
   }
 
   private void ensureNoneCyclicDependency() {
@@ -62,18 +65,9 @@ final class TaskNode extends GraphNode<TaskNode> {
       return;
     }
 
-    StringBuilder builder = new StringBuilder();
-    builder.append("cyclic dependency: [");
-    int size = cyclicNode.size();
-    for (int i = 0; i < size; i++) {
-      TaskNode node = cyclicNode.get(i);
-      builder.append(node.name);
-      if (i != (size - 1)) {
-        builder.append(" -> ");
-      }
-    }
-    builder.append(']');
-    throw new CyclicDependencyException(builder.toString());
+    throw new CyclicDependencyException(
+        "cyclic dependency: [" + TextUtils.join(" -> ", cyclicNode) + ']'
+    );
   }
 
   @Override
@@ -93,5 +87,10 @@ final class TaskNode extends GraphNode<TaskNode> {
   @Override
   public int hashCode() {
     return name != null ? name.hashCode() : 0;
+  }
+
+  @Override
+  public String toString() {
+    return name != null ? name : "";
   }
 }

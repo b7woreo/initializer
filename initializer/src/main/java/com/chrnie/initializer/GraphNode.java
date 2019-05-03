@@ -10,6 +10,7 @@ abstract class GraphNode<T extends GraphNode<T>> {
   private final Set<T> parent = new HashSet<>();
   private final Set<T> children = new HashSet<>();
 
+  @SuppressWarnings("unchecked")
   final void addChild(GraphNode<T> child) {
     if (child == null) {
       throw new NullPointerException("child == null");
@@ -35,23 +36,24 @@ abstract class GraphNode<T extends GraphNode<T>> {
     return cyclicNode.isEmpty() ? null : cyclicNode;
   }
 
+  @SuppressWarnings("unchecked")
   private GraphNode<T> deepFirstTraverse(
       Set<GraphNode<T>> visited,
       Set<GraphNode<T>> inStack,
       List<T> cyclicNode) {
-    visited.add(this);
+
+    if (visited.contains(this)) {
+      return null;
+    }
+
+    if (inStack.contains(this)) {
+      cyclicNode.add((T) this);
+      return this;
+    }
+
     inStack.add(this);
 
     for (GraphNode<T> child : children) {
-      if (inStack.contains(child)) {
-        cyclicNode.add((T) this);
-        return child;
-      }
-
-      if (visited.contains(child)) {
-        continue;
-      }
-
       GraphNode<T> cycleOrigin = child.deepFirstTraverse(visited, inStack, cyclicNode);
 
       if (cyclicNode.isEmpty()) {
@@ -67,6 +69,7 @@ abstract class GraphNode<T extends GraphNode<T>> {
     }
 
     inStack.remove(this);
+    visited.add(this);
     return null;
   }
 }

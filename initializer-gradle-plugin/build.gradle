@@ -3,7 +3,7 @@ apply plugin: 'kotlin'
 
 gradlePlugin {
     plugins {
-        simplePlugin {
+        initializerPlugin {
             id = 'com.chrnie.initializer'
             implementationClass = 'com.chrnie.initializer.plugin.InitializerPlugin'
         }
