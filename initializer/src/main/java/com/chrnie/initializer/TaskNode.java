@@ -10,17 +10,19 @@ import java.util.concurrent.Executor;
 final class TaskNode extends GraphNode<TaskNode> {
 
   private final String name;
+  private final Delay delay;
   private final Executor executor;
   private final Action action;
 
   private Set<TaskNode> dependencies = null;
 
   TaskNode() {
-    this(null, null, null);
+    this(null, null, null, null);
   }
 
-  TaskNode(String name, Executor executor, Action action) {
+  TaskNode(String name, Delay delay, Executor executor, Action action) {
     this.name = name;
+    this.delay = delay != null ? delay : Delay.NONE;
     this.executor = executor != null ? executor : MainExecutor.get();
     this.action = action != null ? action : Action.EMPTY;
   }
@@ -53,7 +55,7 @@ final class TaskNode extends GraphNode<TaskNode> {
       }
     };
 
-    executor.execute(r);
+    delay.runDelayed(executor, r);
   }
 
   private void ensureNoneCyclicDependency() {

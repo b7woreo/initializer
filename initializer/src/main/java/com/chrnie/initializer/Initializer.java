@@ -57,7 +57,7 @@ public final class Initializer {
       }
 
       task.buildConfig();
-      TaskNode node = new TaskNode(taskName, task.getExecutor(), task);
+      TaskNode node = new TaskNode(taskName, task.getDelay(), task.getExecutor(), task);
       nameToNode.put(taskName, node);
     }
 
