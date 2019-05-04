@@ -1,26 +1,28 @@
-package com.chrnie.initializer.module;
+package com.chrnie.initializer.module.a.task;
 
 import android.content.Context;
 import com.chrnie.initializer.basic.AppExecutors;
 import com.chrnie.initializer.basic.BaseTask;
 import com.chrnie.initializer.basic.Tasks;
 
-public class BModuleTask extends BaseTask {
+public class CTask extends BaseTask {
 
-  public BModuleTask() {
-    super(Tasks.B_MODULE);
+  public CTask() {
+    super(Tasks.ModuleA.C);
   }
 
   @Override
   protected void config() {
     setExecutor(AppExecutors.COMPUTE);
-    dependOn(Tasks.A_APP);
+    dependOn(Tasks.UNIMPORTANT);
+    dependOn(Tasks.ModuleA.A);
+    dependOn(Tasks.ModuleB.A);
   }
 
   @Override
   public void onRun(Context context) {
     try {
-      Thread.sleep(5000);
+      Thread.sleep(1000);
     } catch (InterruptedException ignore) {
     }
   }

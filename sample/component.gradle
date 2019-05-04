@@ -1,0 +1,42 @@
+def run_module = 'app'
+
+if (project.name == run_module) {
+    apply plugin: 'com.android.application'
+
+    android {
+        defaultConfig {
+            applicationId "com.chrnie.initializer.sample"
+            versionCode 1
+            versionName "1.0"
+        }
+
+        signingConfigs {
+            config {
+                keyAlias 'sample'
+                keyPassword 'sample'
+                storeFile file("$rootDir/release.key")
+                storePassword 'sample'
+            }
+        }
+
+        buildTypes {
+            release {
+                minifyEnabled true
+                proguardFiles getDefaultProguardFile('proguard-android.txt')
+                signingConfig signingConfigs.config
+            }
+        }
+    }
+} else {
+    apply plugin: 'com.android.library'
+}
+apply plugin: 'com.chrnie.initializer'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+    }
+}

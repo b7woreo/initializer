@@ -1,16 +1,16 @@
-package com.chrnie.initializer.sample;
+package com.chrnie.initializer.module.b;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class BModuleActivity extends Activity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     TextView tv = new TextView(this);
-    tv.setText("App Activity");
+    tv.setText("B Module Activity");
     setContentView(tv);
   }
 

@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.chrnie.initializer.module.a">
+
+  <application>
+    <activity android:name=".AModuleActivity"/>
+  </application>
+</manifest>

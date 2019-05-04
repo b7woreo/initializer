@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.chrnie.initializer'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -7,8 +8,4 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
     }
-}
-
-dependencies {
-    api deps['initializer']
 }

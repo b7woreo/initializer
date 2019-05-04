@@ -4,10 +4,9 @@ ext {
     targetSdkVersion = 28
 }
 
-def initializer_version = '1.2.0'
+def initializer_version = '1.3.0'
 
 ext.deps = [
-        "android"           : "com.android.tools.build:gradle:3.3.1",
+        "android"           : "com.android.tools.build:gradle:3.4.0",
         "initializer-plugin": "com.chrnie:initializer-gradle-plugin:$initializer_version",
-        "initializer"       : "com.chrnie:initializer:$initializer_version",
 ]

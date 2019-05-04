@@ -2,11 +2,29 @@ package com.chrnie.initializer.basic;
 
 public interface Tasks {
 
-  String A_APP = "a_app";
-  String B_APP = "b_app";
+  String UNIMPORTANT = "unimportant";
 
-  String A_MODULE = "a_module";
-  String B_MODULE = "b_module";
-  String C_MODULE = "c_module";
+  interface App {
+
+    String A = "app-a";
+    String B = "app-b";
+    String C = "app-c";
+
+  }
+
+
+  interface ModuleA {
+
+    String A = "module-a-a";
+    String B = "module-a-b";
+    String C = "module-a-c";
+
+  }
+
+  interface ModuleB {
+
+    String A = "module-b-a";
+
+  }
 
 }

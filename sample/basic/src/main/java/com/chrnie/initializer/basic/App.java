@@ -1,4 +1,4 @@
-package com.chrnie.initializer.sample;
+package com.chrnie.initializer.basic;
 
 import android.app.Application;
 import com.chrnie.initializer.Initializer;

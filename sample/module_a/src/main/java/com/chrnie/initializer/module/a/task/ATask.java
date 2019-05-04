@@ -1,20 +1,19 @@
-package com.chrnie.initializer.module;
+package com.chrnie.initializer.module.a.task;
 
 import android.content.Context;
-import android.util.Log;
 import com.chrnie.initializer.basic.BaseTask;
 import com.chrnie.initializer.basic.Tasks;
 
-public class AModuleTask extends BaseTask {
+public class ATask extends BaseTask {
 
-  public AModuleTask() {
-    super(Tasks.A_MODULE);
+  public ATask() {
+    super(Tasks.ModuleA.A);
   }
 
   @Override
   protected void onRun(Context context) {
     try {
-      Thread.sleep(1000);
+      Thread.sleep(100);
     } catch (InterruptedException ignore) {
     }
   }
