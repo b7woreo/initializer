@@ -8,7 +8,7 @@ A framework for initialize task of Android componentization.
 3. Customize task running thread through executor
 
 ## Download
-1. Add gradle plugin:
+Add gradle plugin:
 ```
 // Add in root project build.gradle
 buildscript {
@@ -19,11 +19,6 @@ buildscript {
 
 // Add in module project build.gradle
 apply plugin: 'com.chrnie.initializer'
-```
-
-2. Add dependency:
-```
-implementation "com.chrnie:initializer:$x.y.z"
 ```
 
 ## Usage
