@@ -16,6 +16,7 @@ final class TaskNode extends GraphNode<TaskNode> {
   private final Action action;
 
   private Set<TaskNode> dependencies = null;
+  private boolean executed = false;
 
   TaskNode() {
     this(null, null, null, null);
@@ -28,14 +29,18 @@ final class TaskNode extends GraphNode<TaskNode> {
     this.action = action != null ? action : Action.EMPTY;
   }
 
-  void execute(Context context) {
-    if (Initializer.isDebug()) {
+  void execute(Context context, boolean checkCycle) {
+    if (checkCycle) {
       ensureNoneCyclicDependency();
     }
     executeInternal(context, this);
   }
 
   private synchronized void executeInternal(final Context context, TaskNode caller) {
+    if (executed) {
+      throw new IllegalStateException("task has been executed");
+    }
+
     if (dependencies == null) {
       this.dependencies = new HashSet<>(getParent());
     }
@@ -44,6 +49,8 @@ final class TaskNode extends GraphNode<TaskNode> {
     if (!dependencies.isEmpty()) {
       return;
     }
+
+    executed = true;
 
     final Runnable r = new Runnable() {
       @Override

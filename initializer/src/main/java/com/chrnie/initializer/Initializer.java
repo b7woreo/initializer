@@ -44,7 +44,7 @@ public final class Initializer {
   private void initialize(Context context) {
     List<Task> taskList = TaskLoader.requestTaskList();
     TaskNode rootNode = buildTaskGraph(taskList);
-    rootNode.execute(context);
+    rootNode.execute(context, debug);
   }
 
   private TaskNode buildTaskGraph(List<Task> taskList) {
