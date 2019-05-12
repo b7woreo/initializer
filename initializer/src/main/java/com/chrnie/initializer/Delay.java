@@ -5,7 +5,7 @@ import android.os.Looper;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
-class Delay {
+final class Delay {
 
   static final Delay NONE = new Delay(0, TimeUnit.MILLISECONDS);
 
