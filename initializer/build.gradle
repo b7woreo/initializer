@@ -7,7 +7,16 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+}
+
+dependencies {
+    androidTestImplementation deps['test-core']
+    androidTestImplementation deps['test-runner']
+    androidTestImplementation deps['test-junit']
+    androidTestImplementation deps['mockito']
 }
 
 apply from: "$rootDir/bintray.gradle"
