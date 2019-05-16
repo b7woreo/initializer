@@ -44,10 +44,10 @@ public final class Initializer {
   private void initialize(Context context) {
     List<Task> taskList = TaskLoader.requestTaskList();
     TaskNode rootNode = buildTaskGraph(taskList);
-    rootNode.execute(context);
+    rootNode.execute(context, debug);
   }
 
-  private TaskNode buildTaskGraph(List<Task> taskList) {
+  static TaskNode buildTaskGraph(List<Task> taskList) {
     Map<String, TaskNode> nameToNode = new HashMap<>();
 
     for (Task task : taskList) {

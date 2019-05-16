@@ -18,5 +18,10 @@ ext.deps = [
         "bintray"      : "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4",
         "kotlin"       : "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version",
         "kotlin-stdlib": "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version",
-        "asm"          : "org.ow2.asm:asm:7.1"
+        "asm"          : "org.ow2.asm:asm:7.1",
+
+        "test-core"    : "androidx.test:core:1.1.0",
+        "test-runner"  : "androidx.test:runner:1.1.1",
+        "test-junit"   : "androidx.test.ext:junit:1.1.0",
+        "mockito"      : "org.mockito:mockito-android:2.27.0",
 ]

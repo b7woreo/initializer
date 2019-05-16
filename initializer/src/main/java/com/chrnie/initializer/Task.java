@@ -26,19 +26,19 @@ public abstract class Task implements Action {
     return name;
   }
 
-  Executor getExecutor() {
+  final Executor getExecutor() {
     return executor;
   }
 
-  List<String> getDependencies() {
+  final List<String> getDependencies() {
     return dependencies == null ? Collections.<String>emptyList() : dependencies;
   }
 
-  Delay getDelay() {
+  final Delay getDelay() {
     return delay;
   }
 
-  void buildConfig() {
+  final void buildConfig() {
     buildingConfig = true;
     config();
     buildingConfig = false;
