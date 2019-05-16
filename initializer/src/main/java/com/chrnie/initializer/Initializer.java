@@ -47,7 +47,7 @@ public final class Initializer {
     rootNode.execute(context, debug);
   }
 
-  private TaskNode buildTaskGraph(List<Task> taskList) {
+  static TaskNode buildTaskGraph(List<Task> taskList) {
     Map<String, TaskNode> nameToNode = new HashMap<>();
 
     for (Task task : taskList) {
