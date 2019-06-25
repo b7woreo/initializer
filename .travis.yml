@@ -1,20 +1,31 @@
 language: android
+dist: trusty
 
 android:
   components:
   - tools
   - platform-tools
+  - android-28
+  - android-22
+  - sys-img-armeabi-v7a-android-22
 
 jdk:
-- oraclejdk8
+  - oraclejdk8
 
 # as per http://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure/
 sudo: false
 
 before_install:
-# Install SDK license so Android Gradle plugin can install deps.
-- mkdir "$ANDROID_HOME/licenses" || true
-- echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
+  # Install SDK license so Android Gradle plugin can install deps.
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$ANDROID_HOME/licenses/android-sdk-license"
+
+before_script:
+  # Emulator Management: Create, Start and Wait
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 # script for build and release via Travis to Bintray
 script:
