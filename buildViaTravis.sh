@@ -8,5 +8,5 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_TAG" != "" ]; then
   ./gradlew -PbintrayUser="$BINTRAY_USER" -PbintrayKey="$BINTRAY_KEY" clean bintrayUpload
 else
   echo "Build => Branch ["$TRAVIS_BRANCH"]  Tag ["$TRAVIS_TAG"]"
-  ./gradlew build
+  ./gradlew connectedAndroidTest
 fi

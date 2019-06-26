@@ -14,7 +14,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
-    implementation deps['android']
+    compileOnly deps['android']
     implementation deps['kotlin-stdlib']
     implementation deps['asm']
 }
